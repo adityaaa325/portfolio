@@ -145,3 +145,35 @@ document.addEventListener("DOMContentLoaded", () => {
     mainPage.classList.add("visible");
   }, 4000);
 });
+
+  // Contact form submission - send to backend
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        user_name: form.user_name.value,
+        user_email: form.user_email.value,
+        message: form.message.value
+      };
+
+      try {
+        const resp = await fetch('http://localhost:3000/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await resp.json();
+        if (resp.ok) {
+          alert('Message sent — thank you!');
+          form.reset();
+        } else {
+          alert('Failed to send message: ' + (result.error || 'Unknown error'));
+        }
+      } catch (err) {
+        console.error('Contact submit failed', err);
+        alert('Could not connect to the backend. Make sure it is running on port 3000.');
+      }
+    });
+  }
