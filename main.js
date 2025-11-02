@@ -159,7 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const resp = await fetch('http://localhost:3000/api/contact', {
+        const API_BASE = (window.API_BASE_URL && window.API_BASE_URL.replace(/\/$/, '')) || 'http://localhost:3000';
+        const resp = await fetch(API_BASE + '/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
